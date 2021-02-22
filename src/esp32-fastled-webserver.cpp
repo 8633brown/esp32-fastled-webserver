@@ -1,37 +1,9 @@
-/*
-   ESP32 FastLED WebServer: https://github.com/jasoncoon/esp32-fastled-webserver
-   Copyright (C) 2017 Jason Coon
-
-   Built upon the amazing FastLED work of Daniel Garcia and Mark Kriegsman:
-   https://github.com/FastLED/FastLED
-
-   ESP32 support provided by the hard work of Sam Guyer:
-   https://github.com/samguyer/FastLED
-
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#include <FastLED.h>
+#include "FastLED.h"
 #include <WiFi.h>
 #include <WebServer.h>
 #include <FS.h>
 #include <SPIFFS.h>
 #include <EEPROM.h>
-
-#if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3003000)
-#warning "Requires FastLED 3.3 or later; check github for latest code."
-#endif
 
 WebServer webServer(80);
 
@@ -86,7 +58,6 @@ CRGB leds[NUM_LEDS];
 #include "field.h"
 #include "fields.h"
 
-#include "secrets.h"
 #include "wifi.h"
 #include "web.h"
 
@@ -166,6 +137,18 @@ void setup() {
   autoPlayTimeout = millis() + (autoplayDuration * 1000);
 }
 
+void nextPattern()
+{
+  // add one to the current pattern number, and wrap around at the end
+  currentPatternIndex = (currentPatternIndex + 1) % patternCount;
+}
+
+void nextPalette()
+{
+  currentPaletteIndex = (currentPaletteIndex + 1) % paletteCount;
+  targetPalette = palettes[currentPaletteIndex];
+}
+
 void loop()
 {
   handleWeb();
@@ -200,16 +183,4 @@ void loop()
   // insert a delay to keep the framerate modest
   // FastLED.delay(1000 / FRAMES_PER_SECOND);
   delay(1000 / FRAMES_PER_SECOND);
-}
-
-void nextPattern()
-{
-  // add one to the current pattern number, and wrap around at the end
-  currentPatternIndex = (currentPatternIndex + 1) % patternCount;
-}
-
-void nextPalette()
-{
-  currentPaletteIndex = (currentPaletteIndex + 1) % paletteCount;
-  targetPalette = palettes[currentPaletteIndex];
 }

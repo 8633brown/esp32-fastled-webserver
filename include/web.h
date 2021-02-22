@@ -47,8 +47,8 @@ void setupWeb() {
     digitalWrite(led, 1);
   });
 
-  webServer.serveStatic("/", SPIFFS, "/index.htm", "max-age=86400");
-  webServer.serveStatic("/index.htm", SPIFFS, "/index.htm", "max-age=86400");
+  webServer.serveStatic("/", SPIFFS, "/index.html", "max-age=86400");
+  webServer.serveStatic("/index.html", SPIFFS, "/index.html", "max-age=86400");
   webServer.serveStatic("/favicon.ico", SPIFFS, "/favicon.ico", "max-age=86400");
   webServer.serveStatic("/css/styles.css", SPIFFS, "/css/styles.css", "max-age=86400");
   webServer.serveStatic("/js/app.js", SPIFFS, "/js/app.js", "max-age=86400");

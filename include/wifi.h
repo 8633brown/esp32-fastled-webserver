@@ -60,9 +60,9 @@ void setupWifi() {
   //  else
   //  {
   WiFi.mode(WIFI_STA);
-  Serial.printf("Connecting to %s\n", ssid);
-  if (String(WiFi.SSID()) != String(ssid)) {
-    WiFi.begin(ssid, password);
+  Serial.printf("Connecting to %s\n", WIFI_SSID);
+  if (String(WiFi.SSID()) != String(WIFI_SSID)) {
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
   }
   //  }
 }
